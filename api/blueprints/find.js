@@ -29,7 +29,7 @@ module.exports = async (req, res) => {
 function parseModel(req) {
   let name = parseModelName(req);
   try {
-    let model = rootRequire(`api/models/${name}/erro`);
+    let model = rootRequire(`api/models/${name}`);
     return model;
   } catch (error) {
     return null;
