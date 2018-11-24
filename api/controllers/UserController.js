@@ -1,4 +1,4 @@
-const Person = rootRequire('api/models/Person');
+const Person = rootRequire('api/models/User');
 
 module.exports = {
   // Create a new Person. Because we use `insertGraph` you can pass relations
