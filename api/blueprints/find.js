@@ -1,3 +1,6 @@
+const {
+  parseModel
+} = rootRequire('utils/blueprintActions');
 
 module.exports = async (req, res) => {
   // We don't need to check for the existence of the query parameters because
@@ -25,37 +28,3 @@ module.exports = async (req, res) => {
 
   res.send(responseData);
 };
-
-function parseModel(req) {
-  let name = parseModelName(req);
-  try {
-    let model = rootRequire(`api/models/${name}/erro`);
-    return model;
-  } catch (error) {
-    return null;
-  }
-}
-
-function parseModelName(req) {
-  let url = req.url;
-  console.log('Path: ', req.path);
-  console.log(`parseModelName: ${url}`);
-  url = url.replace(/\//g, '');
-  console.log(`parseModelName: ${url}`);
-
-  let modelName = `Person`;
-  return modelName;
-}
-
-function parseMethod(req) {
-  return req.method;
-}
-
-function normalizeId(id) {
-  if (!_.isString(id)) {
-    return null;
-  }
-  id = id.replace(/(.+)(Controller|Adapter|Service)$/i, '$1');
-  id = id.toLowerCase();
-  return id;
-}
