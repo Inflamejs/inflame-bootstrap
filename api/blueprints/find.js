@@ -1,6 +1,4 @@
-const {
-  parseModel
-} = rootRequire('utils/blueprintActions');
+const { parseModel } = rootRequire('utils/blueprintActions');
 
 module.exports = async (req, res) => {
   // We don't need to check for the existence of the query parameters because
@@ -14,6 +12,9 @@ module.exports = async (req, res) => {
 
   let query = Model.query().skipUndefined();
 
+  /**
+   * @todo Create filtering possibilities
+   */
   const data = await query
     // For security reasons, limit the relations that can be fetched.
     // .allowEager('[pets, parent, children.[pets, movies.actors], movies.actors.pets]')

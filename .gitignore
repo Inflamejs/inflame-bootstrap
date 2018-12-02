@@ -36,3 +36,4 @@ package-lock.json
 .tmp
 dump.rdb
 jsconfig.json
+*.db

@@ -11,15 +11,24 @@
   "engines": {
     "node": ">=8.0.0"
   },
-  "author": "Sami Koskimäki",
+  "_moduleAliases": {
+    "@root": ".",
+    "@models": "api/models",
+    "@controllers": "api/controllers",
+    "@utils": "utils",
+    "@blueprints": "api/blueprints"
+  },
+  "author": "",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.18.0",
     "body-parser": "^1.18.2",
+    "esm": "^3.0.84",
     "express": "^4.16.2",
     "express-promise-router": "^3.0.1",
     "knex": "^0.14.6",
     "lodash": "^4.17.4",
+    "module-alias": "^2.1.0",
     "morgan": "^1.9.0",
     "objection": "^1.1.8",
     "pluralize": "^7.0.0",

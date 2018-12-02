@@ -1,4 +1,14 @@
-const rootRequire = require('./utils/rootRequire')();
+require = require("esm")(module/*, options*/);
+/**
+ * @description: registers the use for path alias, such as '@models/Persons'
+ * WARNING: This module should not be used in other npm modules since it modifies the \
+ * default require behavior! It is designed to be used for development of final projects \
+ * i.e. web-sites, applications etc.
+ */
+require('module-alias/register');
+
+require('./utils/rootRequire')();
+
 const _ = require('lodash');
 const Knex = require('knex');
 const morgan = require('morgan');
@@ -7,7 +17,6 @@ const Promise = require('bluebird');
 const bodyParser = require('body-parser');
 const promiseRouter = require('express-promise-router');
 const knexConfig = require('./knexfile');
-const registerApi = require('./api/router');
 const { Model } = require('objection');
 
 // Initialize knex.
@@ -20,10 +29,11 @@ Model.knex(knex);
 
 // Log knex queries
 knex.on('query', data => {
-  console.dir(`QUERY ==> ${data.sql}`);
+  // console.dir(`QUERY ==> ${data.sql}`);
 });
 
 const router = promiseRouter();
+
 const app = express()
   .use(bodyParser.json())
   .use(morgan('dev'))
@@ -31,7 +41,7 @@ const app = express()
   .set('json spaces', 2);
 
 // Register our REST API.
-registerApi(router);
+require('./api/routes')(router);
 
 // Error handling. The `ValidationError` instances thrown by objection.js have a `statusCode`
 // property that is sent as the status code of the response.

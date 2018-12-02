@@ -4,23 +4,20 @@ const request = require('supertest')(app);
 const _       = require('lodash');
 const knex    = require('knex')(require('../../knexfile').development);
 
-knex.on('query', data => {
-  console.dir(`QUERY ==> ${data.sql}`);
-});
-
-describe('User Controller', () => {
+describe('Person Controller', () => {
   describe('when finding all models', () => {
 
     it('should be successfull', (done) => {
       request
-        .get('/users')
+        .get('/persons')
         .expect(200)
         .end( (err, response) => {
           if(err) {
             return done(err);
           }
-          should.exist(response.body);
-          response.body.should.be.Array();
+          console.log(response.body);
+          should.exist(response.body.persons);
+          response.body.persons.should.be.Array();
           return done();
         });
     });
@@ -35,14 +32,13 @@ describe('User Controller', () => {
         age: 16
       }).then( (result) => {
         recordId = _.first(result);
-        console.log(`first ${recordId}`);
         done();
       });
     });
 
     it('should return an updated record', (done) => {
       request
-        .put(`/users/${recordId}`)
+        .put(`/persons/${recordId}`)
         .send({
           firstName: `Kushina`
         })

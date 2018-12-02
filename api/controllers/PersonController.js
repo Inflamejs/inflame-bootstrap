@@ -1,6 +1,9 @@
-const Person = rootRequire('api/models/User');
+const Person = rootRequire('api/models/Person');
+// const { find } = rootRequire(`api/blueprints`);
+import { find } from '@blueprints';
 
-module.exports = {
+export default {
+  find,
   // Create a new Person. Because we use `insertGraph` you can pass relations
   // with the person and they also get inserted and related to the person. If
   // all you want to do is insert a single person, `insertGraph` and `allowInsert`
@@ -24,9 +27,14 @@ module.exports = {
 
   // Patch a single Person.
   async update(req, res) {
-    console.log('PUT /persons/:id');
-    const user = await Person.query().patchAndFetchById(req.params.id, req.body);
-    res.send({ user });
+    // console.log('PUT /persons/:id');
+    try {
+      const user = await Person.query().patchAndFetchById(req.params.id, req.body);
+      res.send({ user });
+    } catch(err) {
+      console.log(err);
+      res.send(500).send(err);
+    }
   },
 
   // Patch a person and upsert its relations.
@@ -55,30 +63,6 @@ module.exports = {
     });
 
     res.send(upsertedGraph);
-  },
-
-  // Get multiple Persons. The result can be filtered using query parameters
-  // `minAge`, `maxAge` and `firstName`. Relations can be fetched eagerly
-  // by giving a relation expression as the `eager` query parameter.
-
-  // router.get('/persons',
-  async find (req, res) {
-    // We don't need to check for the existence of the query parameters because
-    // we call the `skipUndefined` method. It causes the query builder methods
-    // to do nothing if one of the values is undefined.
-    const persons = await Person.query()
-      .skipUndefined()
-      // For security reasons, limit the relations that can be fetched.
-      .allowEager('[pets, parent, children.[pets, movies.actors], movies.actors.pets]')
-      .eager(req.query.eager)
-      .where('age', '>=', req.query.minAge)
-      .where('age', '<', req.query.maxAge)
-      .where('firstName', 'like', req.query.firstName)
-      .orderBy('firstName')
-      // Order eagerly loaded pets by name.
-      .modifyEager('[pets, children.pets]', qb => qb.orderBy('name'));
-
-    res.send(persons);
   },
 
   // Delete a person.

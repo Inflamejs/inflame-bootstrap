@@ -4,7 +4,7 @@ const Model = require('objection').Model;
 const Animal = require('./Animal');
 const Movie = require('./Movie');
 
-class User extends Model {
+class Person extends Model {
   // Table name is the only required property.
   static get tableName() {
     return 'persons';
@@ -86,4 +86,4 @@ class User extends Model {
   }
 }
 
-module.exports = User;
+module.exports = Person;
